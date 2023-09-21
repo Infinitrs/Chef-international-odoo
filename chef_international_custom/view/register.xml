@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+     <record id="group_approval_right" model="res.groups">
+        <field name="name">Approve Rights</field>
+    </record>
+     <record id="register_action" model="ir.actions.act_window">
+            <field name="name">Donor</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="context">{'search_default_customer': 1,'res_partner_search_mode': 'customer', 'default_is_company': True, 'default_customer_rank': 1}
+            </field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+              </p>
+            </field>
+        </record>
+       <record id="group_cheque_management_customer" model="res.groups">
+           <field name="name">Customer</field>
+       </record>
+       <record id="group_cheque_management_manager" model="res.groups">
+            <field name="name">Manager</field>
+
+       </record>
+
+<record id="budget_order_inherit" model="ir.ui.view">
+    <field name="name">budget.inherit</field>
+    <field name="model">crossovered.budget</field>
+     <field name="inherit_id" ref="account_budget.crossovered_budget_view_form"/>
+    <field name="arch" type="xml">
+     <xpath expr="//field[@name='planned_amount']" position="attributes">
+         <attribute name="string">Budget</attribute>
+
+ </xpath>
+	    <xpath expr="//field[@name='percentage']" position="attributes">
+         <attribute name="invisible">1</attribute>
+
+     </xpath>
+         <xpath expr="//field[@name='planned_amount']" position="replace">
+        <field name="planned_amount" optional="hide"/>
+
+     </xpath>
+         <xpath expr="//field[@name='theoritical_amount']" position="attributes">
+         <attribute name="string">Planned Expense</attribute>
+
+ </xpath>
+	  <xpath expr="//field[@name='theoritical_amount']" position="attributes">
+         <attribute name="invisible">1</attribute>
+
+     </xpath>
+         <xpath expr="//field[@name='practical_amount']" position="attributes">
+         <attribute name="string">Actual Expense</attribute>
+
+     </xpath>
+     <xpath expr="//field[@name='practical_amount']" position="after">
+         <field name="balance" sum="Balance"/>
+     </xpath>
+         <xpath expr="//field[@name='user_id']" position="after">
+            <field name="donor_id"/>
+            <field name="project_id"/>
+        </xpath>
+    </field>
+</record>
+<record id="purchase_order_inherit" model="ir.ui.view">
+    <field name="name">purchase.order</field>
+    <field name="model">purchase.order</field>
+     <field name="inherit_id" ref="purchase.purchase_order_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="//group/div[@name='date_planned_div']" position="after">
+            <field name="budget_id"/>
+            <field name="budget_position"/>
+        </xpath>
+    </field>
+    </record>
+     <record id="hr_expense_inherit" model="ir.ui.view">
+    <field name="name">hr.expense</field>
+    <field name="model">hr.expense</field>
+     <field name="inherit_id" ref="hr_expense.hr_expense_view_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='employee_id']" position="after">
+            <field name="budget_id"/>
+            <field name="budget_position"/>
+        </xpath>
+    </field>
+    </record>
+     <record id="account_move_inherit" model="ir.ui.view">
+    <field name="name">account.move</field>
+    <field name="model">account.move</field>
+     <field name="inherit_id" ref="account.view_move_form"/>
+     <field name="arch" type="xml">
+	      <xpath expr="//header" position="inside">
+                  <field name="hide" invisible="1"/>
+                <field name="hide_confirm" invisible="1"/>
+                <button name="action_approve" string="Approve" type="object" attrs="{'invisible': [('hide','=',True)]}"/>
+       </xpath>
+        <xpath expr="//header/button[1]" position="replace">
+           <button name="action_post" string="Post" class="oe_highlight" type="object" groups="account.group_account_invoice" attrs="{'invisible': [('hide_confirm','=',True),'|',('state','=','draft')]}"/>
+            </xpath>
+        <xpath expr="//header/button[2]" position="replace">
+                <button name="action_post" string="Confirm" class="oe_highlight" type="object" groups="account.group_account_invoice" attrs="{'invisible': [('hide_confirm','=',True),'|',('state','=','draft')]}"/>
+            </xpath>
+        <xpath expr="//field[@name='partner_bank_id']" position="after">
+            <field name="budget_id"/>
+            <field name="budget_position"/>
+        </xpath>
+    </field>
+    </record>
+<record id="account_payment_register_inherit" model="ir.ui.view">
+    <field name="name">account.payment.register</field>
+    <field name="model">account.payment.register</field>
+     <field name="inherit_id" ref="account.view_account_payment_register_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='partner_bank_id']" position="after">
+            <field name="budget_id"/>
+            <field name="budget_position"/>
+            <field name="cheque_no"/>
+        </xpath>
+    </field>
+    </record>
+    <record id="hr_expense_sheet_inherit" model="ir.ui.view">
+    <field name="name">hr.expense.sheet</field>
+    <field name="model">hr.expense.sheet</field>
+     <field name="inherit_id" ref="hr_expense.view_hr_expense_sheet_form"/>
+    <field name="arch" type="xml">
+         <xpath expr="//field[@name='journal_id']" position="after">
+            <field name="budget_id"/>
+            <field name="budget_position"/>
+        </xpath>
+    </field>
+    </record>
+<record id="crossovered_budget_lines_inherit" model="ir.ui.view">
+    <field name="name">crossovered.budget.lines.inherit</field>
+    <field name="model">crossovered.budget.lines</field>
+     <field name="inherit_id" ref="account_budget.view_crossovered_budget_line_tree"/>
+    <field name="arch" type="xml">
+     <xpath expr="//field[@name='planned_amount']" position="attributes">
+         <attribute name="string">Budget</attribute>
+
+     </xpath>
+         <xpath expr="//field[@name='theoritical_amount']" position="attributes">
+         <attribute name="string">Planned Expense</attribute>
+
+     </xpath>
+         <xpath expr="//field[@name='practical_amount']" position="attributes">
+         <attribute name="string">Actual Expense</attribute>
+
+     </xpath>
+     <xpath expr="//field[@name='practical_amount']" position="after">
+         <field name="balance" sum="Balance"/>
+     </xpath>
+    </field>
+</record>
+    <record id="account_reports.account_financial_report_totalincome0" model="account.financial.html.report.line">
+            <field name="name">Donation</field>
+            <field name="code">INC</field>
+            <field name="formulas">OPINC + OIN</field>
+            <field name="parent_id" eval="False"/>
+            <field name="financial_report_id" ref="account_reports.account_financial_report_profitandloss0"/>
+            <field name="sequence" eval="1"/>
+            <field name="level" eval="0" />
+        </record>
+    <record id="account_reports.account_financial_report_net_profit0" model="account.financial.html.report.line">
+            <field name="name">Surplus/-Deficit</field>
+            <field name="code">NEP</field>
+            <field name="financial_report_id" ref="account_reports.account_financial_report_profitandloss0"/>
+            <!-- Use the expanded computation for clarity -->
+            <field name="formulas">OPINC + OIN - COS - EXP - DEP</field>
+            <field name="sequence" eval="3"/>
+            <field name="level" eval="0" />
+        </record>
+    <record id="view_account_analytic_account_form_inherit" model="ir.ui.view">
+    <field name="name">view.account.analytic.account.form.inherit</field>
+    <field name="model">account.analytic.account</field>
+     <field name="inherit_id" ref="account_budget.view_account_analytic_account_form_inherit_budget"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='partner_id']" position="attributes">
+         <attribute name="string">Donor</attribute>
+
+     </xpath>
+     <xpath expr="//field[@name='crossovered_budget_line']/tree/field[@name='percentage']" position="attributes">
+         <attribute name="invisible">1</attribute>
+
+     </xpath>
+     <xpath expr="//field[@name='crossovered_budget_line']/tree/field[@name='planned_amount']" position="replace">
+        <field name="planned_amount" optional="hide"/>
+     </xpath>
+    </field>
+</record>
+ <record id="partner_tree_inherit" model="ir.ui.view">
+    <field name="name">partner.tree.inherit</field>
+    <field name="model">res.partner</field>
+     <field name="inherit_id" ref="base.view_partner_tree"/>
+    <field name="arch" type="xml">
+     <xpath expr="//field[@name='display_name']" position="before">
+           <field name="donor_code" readonly="1"/>
+     </xpath>
+        <xpath expr="//field[@name='user_id']" position="attributes">
+            <attribute name="string">Representative</attribute>
+        </xpath>
+    </field>
+</record>
+	 <record id="product_template_inherit" model="ir.ui.view">
+    <field name="name">product.template.inherit</field>
+    <field name="model">product.template</field>
+     <field name="inherit_id" ref="product.product_template_only_form_view"/>
+    <field name="arch" type="xml">
+     <xpath expr="//field[@name='categ_id']" position="before">
+           <field name="product_nature" />
+     </xpath>
+
+    </field>
+</record>
+    <record id="partner_inherit" model="ir.ui.view">
+    <field name="name">partner.inherit</field>
+    <field name="model">res.partner</field>
+     <field name="inherit_id" ref="base.view_partner_form"/>
+    <field name="arch" type="xml">
+     <xpath expr="//field[@name='name']" position="after">
+         <br/>
+          <div class="o_row">
+           <field name="donor_code" readonly="1"/>
+          </div>
+  </xpath>
+	<xpath expr="//field[@name='vat']" position="after">
+          <field name="strn"/>
+      </xpath>
+        <xpath expr="//group[@name='sale']/field[@name='user_id']" position="attributes">
+            <attribute name="string">Representative</attribute>
+        </xpath>
+    </field>
+</record>
+    <record id="project_form_inherit" model="ir.ui.view">
+    <field name="name">project.inherit</field>
+    <field name="model">project.project</field>
+     <field name="inherit_id" ref="project.edit_project"/>
+    <field name="arch" type="xml">
+     <xpath expr="//field[@name='name']" position="after">
+         <br/>
+          <div class="o_row">
+           <field name="project_code" readonly="1"/>
+          </div>
+     </xpath>
+
+    </field>
+</record>
+      <record id="project_kanban_inherit" model="ir.ui.view">
+    <field name="name">project.kanban.inherit</field>
+    <field name="model">project.project</field>
+     <field name="inherit_id" ref="project.view_project_kanban"/>
+    <field name="arch" type="xml">
+     <xpath expr="//field[@name='partner_id']" position="before">
+           <field name="project_code" readonly="1"/>
+     </xpath>
+        <xpath expr="//div[@class='o_primary']/span" position="after">
+            <span><t t-esc="record.project_code.value"/></span>
+            <br/>
+        </xpath>
+    </field>
+</record>
+
+ <menuitem id="menu_Donor_Registration"
+              name="Donor Registration"
+              action="register_action"
+              sequence="1"/>
+
+</odoo>

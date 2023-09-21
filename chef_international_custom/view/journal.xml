@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+ <template id="donor_registration">
+         <t t-call="web.html_container">
+
+                <t t-foreach="docs" t-as="s">
+                     <header style="margin-top:-1%;">
+                         <div style="margin-left:900px;">
+                    <img src="http://localhost:8069/chef_international_custom/static/chef.jpeg" alt="logo"  width="150px" height="150px"/>
+                     </div>
+                        <div style="margin-top:-100px;">
+                            <h style="font-size:60px;color:#A0A0A0;margin-left:23%;width:100px;"><u>Chef International</u></h>
+                        </div>
+</header>
+                     <div style="margin-top:40px;">
+                            <h style="font-size:30px;color:#000000;margin-left:30%;width:100px;"><u>Journal Voucher</u></h>
+                        </div>
+                    <div style="margin-top:60px;">
+                        <h><u>Voucher Information:-</u></h>
+                    </div>
+                        <div style="margin-top:20px;">
+                        <p>Project Name:- <t t-esc="s.project_name.name"/></p>
+                         <p>Voucher No:- <t t-esc="s.name"/></p>
+                        <p>Voucher Date:- <t t-esc="s.date"/></p>
+                            <p>Payee/Payer:- <t t-esc="s.partner_id.name"/></p>
+                    </div>
+                    <div style="margin-left:80%;margin-top:-100px;">
+                        <p>Currency:- <t t-esc="s.company_id.currency_id.name"/></p>
+                        <p>Document No:- <t t-esc="s.document_no"/></p>
+                        <p>NTN/NIC# <t t-esc="s.NTN_NIC"/></p>
+                         <b>Location:- <t t-esc="s.partner_id.property_stock_supplier.name"/></b>
+                    </div>
+                    <div>
+                        <p><u>Voucher Classification:-</u></p>
+                    </div>
+                      <style>
+                    table, th, td {
+                    border: 1px solid black;
+                    border-collapse: collapse;
+                    }
+                   </style>
+                    <table>
+
+                        <tr>
+
+                            <th style="width:200px;">Proj</th>
+                            <th style="width:200px;">Acti</th>
+                            <th style="width:200px;">A/C</th>
+                            <th style="width:700px;">Description</th>
+                            <th style="width:100px;">Dr.</th>
+                            <th style="width:100px;">Cr.</th>
+                        </tr>
+                      <t t-set="total_debit" t-value="0"/>
+                        <t t-set="total_credit" t-value="0"/>
+                         <t t-foreach="request.env['account.move.line'].search([('move_id','=',s.move_id.id)])" t-as="obj">
+                         <t t-set="total_debit" t-value="total_debit + obj.debit"/>
+                        <t t-set="total_credit" t-value="total_credit + obj.credit"/>
+
+
+                       <tr>
+                         
+                           <td style="width:200px;" t-esc="s.project_name.project_code"></td>
+                           <td style="width:200px;"></td>
+                           <td style="width:200px;" t-esc="obj.account_id.code"></td>
+                          <td style="width:700px;" t-esc="obj.name"/>
+                           <td style="width:100px;" t-esc="obj.debit"/>
+                           <td style="width:100px;" t-esc="obj.credit"/>
+                       </tr>
+                         </t>
+                    </table>
+                    <div style="margin-left:79%;">
+                    <b>Total:-PKR <t t-esc="total_debit"/></b>
+                    <b><span style="margin-left:60px;"><t t-esc="total_credit"/></span></b>
+                    </div>
+                    <div style="margin-left:60%;margin-top:-35px;">
+                     <p><u>end of voucher</u></p>
+                    </div>
+                    <footer style="margin-top:30%;">
+                        <form>
+                  <div>
+                      <b>___________________________________</b>
+                      <p>Prepared by:-</p>
+                  </div>
+                        <div style="margin-left:37%;margin-top:-70px;">
+                      <b>_____________________________________</b>
+                      <p>Verified by:-    <br><p style="margin-top:-20px;">(C.E.O)</p></br></p>
+                        </div>
+                        <div style="margin-left:70%;margin-top:-90px;">
+                      <b>_______________________________________</b>
+                  </div>
+                      <div style="margin-top:80px;">
+                      <p>Received by/Dated:-    <br><p style="margin-top:-20px;">(C.E.O)</p></br></p>
+                      </div>
+                        <div style="margin-left:20%;margin-top:-50px;">
+                      <b>__________________________________________</b>
+                          </div>
+
+</form>
+
+                    </footer>
+
+</t>
+
+
+
+         </t>
+ </template>
+</odoo>

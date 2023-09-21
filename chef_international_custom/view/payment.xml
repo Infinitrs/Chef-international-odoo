@@ -106,4 +106,121 @@
                 </t>
          </t>
  </template>
+     <template id="chef_payment_template_entry">
+         <t t-call="web.html_container">
+
+                <t t-foreach="docs" t-as="s">
+                     <header style="margin-top:-1%;">
+                         <div style="margin-left:800px;">
+                    <img src="http://localhost:8069/chef_international_custom/static/chef.jpeg" alt="logo"  width="150px" height="150px"/>
+                     </div>
+                        <div style="margin-top:-100px;">
+                            <h style="font-size:30px;color:#A0A0A0;margin-left:16%;width:100px;"><u>Comprehensive Health and Education Forum</u></h>
+                        </div>
+</header>
+                     <div style="margin-top:40px;">
+                            <h style="font-size:30px;color:#000000;margin-left:30%;width:100px;"><u>Bank Payment Voucher</u></h>
+                        </div>
+
+                        <div style="margin-top:20px;">
+                        <p>Project Name:- <t t-esc="s.ref"/></p>
+                         <p>Voucher No:-  <t t-esc="s.name"/></p>
+                        <p>Voucher Date:- <t t-esc="s.date"/></p>
+                            <p>Payee/Payer:-<t t-esc="s.partner_id.name"/></p>
+                    </div>
+                    <div style="margin-left:80%;margin-top:-100px;">
+                        <p>Document No:- <t t-esc="s.document_no"/></p>
+                        <p>Currency:- <t t-esc="s.company_id.currency_id.name"/></p>
+                        <p>NTN/NIC# <t t-esc="s.NTN_NIC"/></p>
+                    </div>
+                    <div>
+                        <p><u>Voucher Classification:-</u></p>
+                    </div>
+                      <style>
+                    table, th, td {
+                    border: 1px solid black;
+                    border-collapse: collapse;
+                    }
+                   </style>
+                    <table>
+                        <tr>
+                            <td style="width:200px;">Proj</td>
+                            <td style="width:200px;">COA</td>
+                            <td style="width:700px;">Description</td>
+                            <td style="width:100px;">Dr.</td>
+                            <td style="width:100px;">Cr.</td>
+                        </tr>
+                        <tr t-foreach="s.line_ids" t-as="obj">
+                         <t t-set="total_debit" t-value="0"/>
+                        <t t-set="total_credit" t-value="0"/>
+                          <t t-set="total_debit" t-value="total_debit + obj.debit"/>
+                          <t t-set="total_credit" t-value="total_credit + obj.credit"/>
+
+
+                       <tr>
+                           <td style="width:200px;"><span t-esc="obj.analytic_account_id.name"/></td>
+                            <td style="width:200px;"><span t-esc="obj.account_id.name"/></td>
+                           <td style="width:700px;"><span t-esc="obj.name"/></td>
+                           <td style="width:100px;"><span t-esc="total_debit"/></td>
+                           <td style="width:100px;"><span t-esc="total_credit"/></td>
+                       </tr>
+                         </tr>
+                    </table>
+                    <div style="margin-left:79%;">
+                    <b>Total:-PKR <t t-esc="total_debit"/></b>
+                    <b><span style="margin-left:60px;"><t t-esc="total_credit"/></span></b>
+                    </div>
+                    <footer style="margin-top:30%;">
+                        <form>
+                  <div>
+                      <b>___________________________________</b>
+                      <p>Prepared by:-  <br><p style="margin-top:-20px;">(Accounts)</p></br></p>
+
+                  </div>
+                        <div style="margin-left:37%;margin-top:-70px;">
+                      <b>_____________________________________</b>
+                      <p>Verified by:-    <br><p style="margin-top:-20px;">(C.F.O)</p></br></p>
+                        </div>
+                        <div style="margin-left:70%;margin-top:-90px;">
+                      <b>_______________________________________</b>
+                       <p>Approved by:-    <br><p style="margin-top:-20px;">(C.E.O)</p></br></p>
+
+                  </div>
+
+
+</form>
+                    </footer>
+
+                </t>
+         </t>
+ </template>
+     <record id="paperformat_a4_clear_musani" model="report.paperformat">
+        <field name="name">A4 w/o header</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">3</field>
+        <field name="margin_right">3</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+     <data>
+    <record id="action_report_payment_voucher_details" model="ir.actions.report">
+      <field name="name">Payment Voucher</field>
+      <field name="model">account.move</field>
+      <field name="report_type">qweb-pdf</field>
+      <field name="report_name">chef_international_custom.chef_payment_template_entry</field>
+      <field name="report_file">chef_international_custom.chef_payment_template_entry</field>
+      <field name="print_report_name">'Chef Report - %s' % (object.name or '')</field>
+      <field name="binding_model_id" ref="account.model_account_move"></field>
+      <field name="binding_type">report</field>
+      <field name="paperformat_id" ref="chef_international_custom.paperformat_a4_clear_musani" />
+
+    </record>
+  </data>
 </odoo>

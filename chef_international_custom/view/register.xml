@@ -102,6 +102,7 @@
         <xpath expr="//field[@name='partner_bank_id']" position="after">
             <field name="budget_id"/>
             <field name="budget_position"/>
+              <field name="partner_id" attrs="{'invisible':[('move_type','!=','entry')]}"/>
         </xpath>
     </field>
     </record>

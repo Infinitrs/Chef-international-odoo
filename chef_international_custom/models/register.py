@@ -200,6 +200,7 @@ class AccountMove(models.Model):
     hide = fields.Boolean(compute='get_hide')
     hide_confirm = fields.Boolean(default=True)
     click_check = fields.Boolean(default=False)
+    partner_id = fields.Many2one('res.partner')
 
     def get_hide(self):
         for rec in self:

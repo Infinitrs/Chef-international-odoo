@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+     <record id="payment_voucher_customizations_form" model="ir.ui.view">
+       <field name="name">account.move</field>
+       <field name="inherit_id" ref="account.view_move_form" />
+       <field name="model">account.move</field>
+       <field name="arch" type="xml">
+              <xpath expr="//field[@name='budget_position']" position="after">
+                  <field name="document_no"/>
+                  <field name="ntn_nic"/>
+
+
+ </xpath>
+       </field>
+   </record>
  <template id="chef_payment_template">
          <t t-call="web.html_container">
 
@@ -123,7 +136,13 @@
                         </div>
 
                         <div style="margin-top:20px;">
-                        <p>Project Name:- <t t-esc="s.ref"/></p>
+                             <t t-set="project" t-value="0"/>
+                            <t t-foreach="s.line_ids" t-as="o">
+                                <t t-if="o.analytic_account_id.name">
+                                    <t t-set="project" t-value="o.analytic_account_id.name"/>
+                                    </t>
+                            </t>
+                        <p>Project Name:- <t t-esc="project"/></p>
                          <p>Voucher No:-  <t t-esc="s.name"/></p>
                         <p>Voucher Date:- <t t-esc="s.date"/></p>
                             <p>Payee/Payer:-<t t-esc="s.partner_id.name"/></p>
@@ -160,10 +179,10 @@
 
                        <tr>
                            <td style="width:200px;"><span t-esc="obj.analytic_account_id.name"/></td>
-                            <td style="width:200px;"><span t-esc="obj.account_id.name"/></td>
+                            <td style="width:200px;"><span t-esc="obj.account_id.code"/><span t-esc="obj.account_id.name"/></td>
                            <td style="width:700px;"><span t-esc="obj.name"/></td>
-                           <td style="width:100px;"><span t-esc="total_debit"/></td>
-                           <td style="width:100px;"><span t-esc="total_credit"/></td>
+                           <td style="width:100px;"><span t-esc="obj.debit"/></td>
+                           <td style="width:100px;"><span t-esc="obj.credit"/></td>
                        </tr>
                          </tr>
                     </table>
@@ -173,7 +192,7 @@
                     <footer style="margin-top:40%;">
 
                   <u>________________</u>
-                        <p>Prepared by:- (Accounts)</p>
+                        <p>Prepared by:- (<t t-esc="user.name"/> )</p>
                         <div style="margin-left:37%;margin-top:-70px;">
                       <b>________________</b>
                       <p>Verified by:-    <br><p style="margin-top:-20px;">(C.F.O)</p></br></p>

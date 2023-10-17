@@ -131,7 +131,7 @@
                     <div style="margin-left:80%;margin-top:-100px;">
                         <p>Document No:- <t t-esc="s.document_no"/></p>
                         <p>Currency:- <t t-esc="s.company_id.currency_id.name"/></p>
-                        <p>NTN/NIC# <t t-esc="s.NTN_NIC"/></p>
+                        <p>NTN/NIC# <t t-esc="s.ntn_nic"/></p>
                     </div>
                     <div>
                         <p><u>Voucher Classification:-</u></p>

@@ -115,7 +115,7 @@
                     <img src="http://194.163.131.157:8069/chef_international_custom/static/chef.jpeg" alt="logo"  width="150px" height="150px"/>
                      </div>
                         <div style="margin-top:-100px;">
-                            <h style="font-size:30px;color:#A0A0A0;margin-left:16%;width:100px;"><u>Comprehensive Health and Education Forum</u></h>
+                            <h style="font-size:30px;color:#A0A0A0;margin-left:6%;width:100px;"><u>Comprehensive Health and Education Forum</u></h>
                         </div>
 </header>
                      <div style="margin-top:40px;">
@@ -149,10 +149,11 @@
                             <td style="width:700px;">Description</td>
                             <td style="width:100px;">Dr.</td>
                             <td style="width:100px;">Cr.</td>
-                        </tr>
-                        <tr t-foreach="s.line_ids" t-as="obj">
-                         <t t-set="total_debit" t-value="0"/>
+		    </tr>
+			      <t t-set="total_debit" t-value="0"/>
                         <t t-set="total_credit" t-value="0"/>
+
+                        <tr t-foreach="s.line_ids" t-as="obj">
                           <t t-set="total_debit" t-value="total_debit + obj.debit"/>
                           <t t-set="total_credit" t-value="total_credit + obj.credit"/>
 
@@ -167,28 +168,24 @@
                          </tr>
                     </table>
                     <div style="margin-left:79%;">
-                    <b>Total:-PKR <t t-esc="total_debit"/></b>
-                    <b><span style="margin-left:60px;"><t t-esc="total_credit"/></span></b>
+			    <b>Total:</b><t t-esc="total_debit"/> <span><t t-esc="total_credit"/></span>
                     </div>
-                    <footer style="margin-top:30%;">
-                        <form>
-                  <div>
-                      <b>___________________________________</b>
-                      <p>Prepared by:-  <br><p style="margin-top:-20px;">(Accounts)</p></br></p>
+                    <footer style="margin-top:40%;">
 
-                  </div>
+                  <u>________________</u>
+                        <p>Prepared by:- (Accounts)</p>
                         <div style="margin-left:37%;margin-top:-70px;">
-                      <b>_____________________________________</b>
+                      <b>________________</b>
                       <p>Verified by:-    <br><p style="margin-top:-20px;">(C.F.O)</p></br></p>
                         </div>
-                        <div style="margin-left:70%;margin-top:-90px;">
-                      <b>_______________________________________</b>
+                        <div style="margin-left:70%;margin-top:-85px;">
+                      <b>________________</b>
                        <p>Approved by:-    <br><p style="margin-top:-20px;">(C.E.O)</p></br></p>
 
                   </div>
 
 
-</form>
+
                     </footer>
 
                 </t>

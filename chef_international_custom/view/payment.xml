@@ -13,7 +13,7 @@
                         </div>
 </header>
                      <div style="margin-top:40px;">
-                            <h style="font-size:30px;color:#000000;margin-left:30%;width:100px;"><u><span t-esc="journal_id"/></u></h>
+                            <h style="font-size:30px;color:#000000;margin-left:30%;width:100px;"><u><span t-esc="s.journal_id"/></u></h>
                         </div>
                     <div style="margin-top:60px;">
                         <h><u>Voucher Information:-</u></h>
@@ -112,14 +112,14 @@
                 <t t-foreach="docs" t-as="s">
                      <header style="margin-top:-1%;">
                          <div style="margin-left:800px;">
-                    <img src="http://localhost:8069/chef_international_custom/static/chef.jpeg" alt="logo"  width="150px" height="150px"/>
+                    <img src="http://194.163.131.157:8069/chef_international_custom/static/chef.jpeg" alt="logo"  width="150px" height="150px"/>
                      </div>
                         <div style="margin-top:-100px;">
                             <h style="font-size:30px;color:#A0A0A0;margin-left:16%;width:100px;"><u>Comprehensive Health and Education Forum</u></h>
                         </div>
 </header>
                      <div style="margin-top:40px;">
-                            <h style="font-size:30px;color:#000000;margin-left:30%;width:100px;"><u>Bank Payment Voucher</u></h>
+                            <h style="font-size:30px;color:#000000;margin-left:30%;width:100px;"><u><t t-esc="s.journal_id.name"/> Voucher</u></h>
                         </div>
 
                         <div style="margin-top:20px;">

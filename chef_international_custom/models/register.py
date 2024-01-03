@@ -221,6 +221,19 @@ class AccountMove(models.Model):
     click_check = fields.Boolean(default=False)
     partner_id = fields.Many2one('res.partner')
 
+    def action_post(self):
+        res = super().action_post()
+        budget = self.env['crossovered.budget'].browse(self.budget_id.id)
+        if budget:
+            for i in budget.crossovered_budget_line:
+                for x in self.line_ids:
+                    if x.debit > 0:
+                        if x.analytic_account_id == i.analytic_account_id and x.budget_position == i.general_budget_id:
+                            i.practical_amount = x.debit
+                            i.balance = i.balance + x.debit
+
+        return res
+
     def get_hide(self):
         for rec in self:
             if self.env.user.has_group('chef_international_custom.group_approval_right'):

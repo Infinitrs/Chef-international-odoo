@@ -78,7 +78,7 @@
                     <footer style="margin-top:30%;">
                         <form>
                   <div>
-                       <u>(<t t-esc="user.name"/>)</u>
+                      <b>___________________________________</b>
                       <p>Prepared by:-</p>
                   </div>
                         <div style="margin-left:37%;margin-top:-70px;">

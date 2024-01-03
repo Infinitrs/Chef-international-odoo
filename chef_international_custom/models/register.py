@@ -192,6 +192,23 @@ class PurchaseOrder(models.Model):
         return res
 
 
+class AccountMoveLine(models.Model):
+    _inherit = 'account.move.line'
+
+    budget_position = fields.Many2one('account.budget.post')
+
+    @api.onchange('analytic_account_id')
+    def onchange_analytic_account_id(self):
+            account_analytic_obj = self.env['account.analytic.account'].search([('id','=',self.analytic_account_id.id)])
+            if account_analytic_obj:
+                budgetry_position_list = []
+                for i in account_analytic_obj.crossovered_budget_line:
+                    if self.move_id.budget_id == i.crossovered_budget_id:
+                        budgetry_position_list.append(i.general_budget_id.id)
+            domain = [('id', 'in', budgetry_position_list)]
+            # Update the domain of the Many2one field
+            return {'domain': {'budget_position': domain}}
+
 class AccountMove(models.Model):
     _inherit = 'account.move'
 

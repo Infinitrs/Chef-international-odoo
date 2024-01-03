@@ -190,8 +190,9 @@
 			    <b>Total:</b><t t-esc="total_debit"/> <span><t t-esc="total_credit"/></span>
                     </div>
                     <footer style="margin-top:40%;">
-                        <p><u style="font-size:20px;">(<t t-esc="user.name"/>)</u></p>
-                        <p>Prepared by:- </p>
+
+                  <u>________________</u>
+                        <p>Prepared by:- (<t t-esc="user.name"/> )</p>
                         <div style="margin-left:37%;margin-top:-70px;">
                       <b>________________</b>
                       <p>Verified by:-    <br><p style="margin-top:-20px;">(C.F.O)</p></br></p>

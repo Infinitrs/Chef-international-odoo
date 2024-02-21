@@ -203,8 +203,8 @@ class AccountMoveLine(models.Model):
             if account_analytic_obj:
                 budgetry_position_list = []
                 for i in account_analytic_obj.crossovered_budget_line:
-                    if self.move_id.budget_id == i.crossovered_budget_id:
-                        budgetry_position_list.append(i.general_budget_id.id)
+                    #if self.move_id.budget_id == i.crossovered_budget_id:
+                    budgetry_position_list.append(i.general_budget_id.id)
             domain = [('id', 'in', budgetry_position_list)]
             # Update the domain of the Many2one field
             return {'domain': {'budget_position': domain}}

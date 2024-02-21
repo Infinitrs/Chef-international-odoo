@@ -24,7 +24,7 @@ class CrossoveredBudgetLines(models.Model):
 
     def get_balance(self):
         for rec in self:
-            rec.balance = rec.planned_amount - rec.practical_amount
+            rec.balance = rec.planned_amount + rec.practical_amount
 
 
 class ResPartner(models.Model):

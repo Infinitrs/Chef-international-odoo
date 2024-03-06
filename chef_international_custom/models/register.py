@@ -36,6 +36,7 @@ class ResPartner(models.Model):
     company_type = fields.Selection(string='Company Type',
                                     selection=[('person', 'Individual'), ('company', 'Company'),
                                                ('organization', 'Organization')])
+
     @api.onchange('company_type')
     def on_change_company_type(self):
         for rec in self:
@@ -139,9 +140,9 @@ class Project(models.Model):
             partner = self.env['res.partner'].search([('id', '=', self.partner_id.id)])
         if projects >= 1:
             if projects == 1:
-               inc_project = projects
+                inc_project = projects
             else:
-               inc_project = projects + 1
+                inc_project = projects + 1
             if len(str(projects)) == 1:
                 str_c = '-0'
             else:
@@ -160,6 +161,7 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     product_nature = fields.Char()
+
 
 class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
@@ -199,15 +201,16 @@ class AccountMoveLine(models.Model):
 
     @api.onchange('analytic_account_id')
     def onchange_analytic_account_id(self):
-            account_analytic_obj = self.env['account.analytic.account'].search([('id','=',self.analytic_account_id.id)])
-            if account_analytic_obj:
-                budgetry_position_list = []
-                for i in account_analytic_obj.crossovered_budget_line:
-                    #if self.move_id.budget_id == i.crossovered_budget_id:
-                    budgetry_position_list.append(i.general_budget_id.id)
-            domain = [('id', 'in', budgetry_position_list)]
-            # Update the domain of the Many2one field
-            return {'domain': {'budget_position': domain}}
+        account_analytic_obj = self.env['account.analytic.account'].search([('id', '=', self.analytic_account_id.id)])
+        if account_analytic_obj:
+            budgetry_position_list = []
+            for i in account_analytic_obj.crossovered_budget_line:
+                # if self.move_id.budget_id == i.crossovered_budget_id:
+                budgetry_position_list.append(i.general_budget_id.id)
+        domain = [('id', 'in', budgetry_position_list)]
+        # Update the domain of the Many2one field
+        return {'domain': {'budget_position': domain}}
+
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
@@ -220,6 +223,14 @@ class AccountMove(models.Model):
     hide_confirm = fields.Boolean(default=True)
     click_check = fields.Boolean(default=False)
     partner_id = fields.Many2one('res.partner')
+
+    @api.multi
+    def name_get(self):
+        result = []
+        for record in self:
+            name = record.journal_id.name
+            result.append((record.id, name))
+        return result
 
     def action_post(self):
         res = super().action_post()
@@ -269,17 +280,18 @@ class AccountPaymentRegister(models.TransientModel):
     budget_position = fields.Many2one('account.budget.post', string='Budgetary Position')
     cheque_no = fields.Char('Cheque No')
 
+
 class HrExpenseSheet(models.Model):
     _inherit = 'hr.expense.sheet'
 
     budget_id = fields.Many2one('crossovered.budget')
     budget_position = fields.Many2one('account.budget.post', string='Budgetary Position')
 
-    #def action_register_payment(self):
-     #   res = super(HrExpenseSheet, self).action_register_payment()
-      #  for order in self:
-       #     res['context'] = {
-        #        'default_budget_id': order.budget_id.id,
-         #       'default_budget_position': order.budget_position.id,
-          #  }
-        #return res
+    # def action_register_payment(self):
+    #   res = super(HrExpenseSheet, self).action_register_payment()
+    #  for order in self:
+    #     res['context'] = {
+    #        'default_budget_id': order.budget_id.id,
+    #       'default_budget_position': order.budget_position.id,
+    #  }
+    # return res

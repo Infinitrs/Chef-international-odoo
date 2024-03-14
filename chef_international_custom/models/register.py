@@ -216,7 +216,8 @@ class AccountMove(models.Model):
     _inherit = 'account.move'
 
     document_no = fields.Char('Document No')
-    ntn_nic = fields.Char('NTN/NIC')
+    # ntn_nic = fields.Char('NTN/NIC')
+    ntn_nic = fields.Char('NTN/NIC', related='partner_id.vat')
     budget_id = fields.Many2one('crossovered.budget')
     budget_position = fields.Many2one('account.budget.post', string='Budgetary Position')
     hide = fields.Boolean(compute='get_hide')
@@ -224,7 +225,9 @@ class AccountMove(models.Model):
     click_check = fields.Boolean(default=False)
     partner_id = fields.Many2one('res.partner')
 
-    @api.multi
+
+
+    # @api.model_create_multi()
     def name_get(self):
         result = []
         for record in self:
